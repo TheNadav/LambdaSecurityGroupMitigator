@@ -1,6 +1,6 @@
 # Automatic Security Group Remediation in AWS
 
-This repository contains a solution to automatically remediate AWS security group rules that open ports to `0.0.0.0/0`, excluding ports 80 and 443. The solution includes two Lambda functions: one for real-time remediation of new security group changes and another for initial remediation of existing security groups.
+This repository contains a solution to automatically remediate AWS security group rules that open ports to `0.0.0.0/0`, excluding ports 80 and 443. (real-time remediation of new security group changes)
 
 
 ## Deployment Guide
