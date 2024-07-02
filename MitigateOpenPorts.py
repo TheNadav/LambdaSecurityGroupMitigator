@@ -30,9 +30,28 @@ def lambda_handler(event, context):
         for permission in ip_permissions:
             for ip_range in permission['IpRanges']:
                 if ip_range['CidrIp'] == '0.0.0.0/0':
-                    from_port = permission['FromPort']
-                    to_port = permission['ToPort']
-                    
+                    ip_protocol = permission.get('IpProtocol', '')
+
+                    # Handle 'All traffic' rules (IpProtocol == '-1')
+                    if ip_protocol == '-1':
+                        ec2.revoke_security_group_ingress(
+                            GroupId=security_group_id,
+                            IpProtocol=ip_protocol,
+                            FromPort=-1,
+                            ToPort=-1,
+                            CidrIp='0.0.0.0/0'
+                        )
+                        logger.info(f"Revoked 'All traffic' rule in security group {security_group_id}")
+                        continue
+
+                    from_port = permission.get('FromPort', None)
+                    to_port = permission.get('ToPort', None)
+
+                    # Skip rules without specific ports (protocols like ICMP, etc.)
+                    if from_port is None or to_port is None:
+                        logger.info(f"Skipping rule without specific port range in security group {security_group_id}")
+                        continue
+
                     # Skip ports 80 and 443
                     if from_port in [80, 443] and to_port in [80, 443]:
                         logger.info(f"Skipping open port {from_port} - {to_port} in security group {security_group_id}")
@@ -41,7 +60,7 @@ def lambda_handler(event, context):
                     # Revoke the insecure rule
                     ec2.revoke_security_group_ingress(
                         GroupId=security_group_id,
-                        IpProtocol=permission['IpProtocol'],
+                        IpProtocol=ip_protocol,
                         FromPort=from_port,
                         ToPort=to_port,
                         CidrIp='0.0.0.0/0'
