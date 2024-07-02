@@ -60,10 +60,4 @@ This repository contains a solution to automatically remediate AWS security grou
    - Click "Configure details".
    - Name the rule (e.g., `MitigateOpenPortsRule`) and complete the creation process.
 
-#### Step 4: Enable CloudTrail (if not already enabled)
-
-1. **Go to CloudTrail Console**:
-   - Open the AWS Management Console and go to CloudTrail.
-
-2. **Create a trail**:
-   - Ensure that CloudTrail is set up to log API calls for your account.
+#### Enable CloudTrail ! (if not already enabled)
