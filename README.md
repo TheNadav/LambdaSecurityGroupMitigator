@@ -67,4 +67,3 @@ This repository contains a solution to automatically remediate AWS security grou
 
 2. **Create a trail**:
    - Ensure that CloudTrail is set up to log API calls for your account.
-   - Follow the instructions to create a trail if you don't already have one set up.
