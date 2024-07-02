@@ -53,6 +53,19 @@ This repository contains a solution to automatically remediate AWS security grou
    - Select "Specific operations by specific services".
    - Select "EC2" as the service name.
    - Select "AuthorizeSecurityGroupIngress" as the operation name.
+    
+Event pattern:
+```javascript
+{
+  "source": ["aws.ec2"],
+  "detail-type": ["AWS API Call via CloudTrail"],
+  "detail": {
+    "eventSource": ["ec2.amazonaws.com"],
+    "eventName": ["AuthorizeSecurityGroupIngress"]
+  }
+}
+```
+
 
 3. **Add the target**:
    - Choose "Lambda function".
